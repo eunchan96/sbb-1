@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("test")
 @Configuration
 @RequiredArgsConstructor
-public class TestBaseInitData {
+public class TestInitData {
     @Autowired
     @Lazy
-    private TestBaseInitData self;
+    private TestInitData self;
 
     private final QuestionRepository questionRepository;
 
