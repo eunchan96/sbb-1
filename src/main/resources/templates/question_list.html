@@ -7,7 +7,7 @@
     </thead>
     <tbody>
         <tr th:each="question : ${questions}">
-            <td th:text="${question.subject}">제목</td>
+            <td><a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.subject}">제목</a></td>
             <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}">작성일시</td>
         </tr>
     </tbody>
