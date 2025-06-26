@@ -1,3 +1,27 @@
+server:
+  port: 8082
 spring:
   application:
     name: sbb-1
+  profiles:
+    active: dev
+  output:            # 일반 로그들도 컬러풀하게 (commuity 버전만)
+    ansi:
+      enabled: always
+  datasource:
+    hikari:
+      auto-commit: false    # 트랜잭션 시작 시 한 번만 `SET autocommit=0` 설정
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update      # update vs create
+    properties:
+      hibernate:
+        format_sql: true         # SQL 형식으로
+        highlight_sql: true      # SQL 로그를 컬러풀하게
+        use_sql_comments: true   # 정보 자세하게 나오도록
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace     # SQL 로그에서 ? 부분의 값도 출력
+    org.hibernate.orm.jdbc.extract: trace  # INSERT, SELECT의 결과값도 출력
+    org.springframework.transaction.interceptor: trace     # 트랜잭션
