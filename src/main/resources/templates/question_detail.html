@@ -1,2 +1,21 @@
 <h1 th:text="${question.subject}">제목</h1>
 <div th:text="${question.content}">내용</div>
+
+<form th:action="@{/answer/create/{questionId}(questionId=${question.id})}" method="post">
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="답변등록" />
+</form>
+
+<hr>
+
+<h2>답변 목록</h2>
+<div th:text="|${#lists.size(question.answers)}개의 답변이 있습니다.|">답변 개수</div>
+<div>
+    <ul th:each="answer : ${question.answers}">
+        <li>
+            <div th:text="${answer.content}">답변 내용</div>
+            <div>작성일시: <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}">작성일시</span></div>
+        </li>
+
+    </ul>
+</div>
