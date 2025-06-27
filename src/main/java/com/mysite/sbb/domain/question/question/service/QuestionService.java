@@ -20,4 +20,12 @@ public class QuestionService {
         Question question = questionRepository.findById(id).get();
         return question;
     }
+
+    public Question create(String subject, String content) {
+        Question question = new Question();
+        question.setSubject(subject);
+        question.setContent(content);
+        questionRepository.save(question);
+        return question;
+    }
 }
