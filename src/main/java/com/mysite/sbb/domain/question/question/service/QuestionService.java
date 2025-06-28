@@ -42,4 +42,8 @@ public class QuestionService {
     public long count() {
         return questionRepository.count();
     }
+
+    public void modify(Question question, String subject, String content) {
+        question.modify(subject, content);
+    }
 }
