@@ -39,6 +39,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.27.3")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    implementation("org.commonmark:commonmark:0.25.0")
 }
 
 tasks.withType<Test> {
