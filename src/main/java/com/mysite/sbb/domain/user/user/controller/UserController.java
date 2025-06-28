@@ -1,7 +1,7 @@
-package com.mysite.sbb.domain.user.controller;
+package com.mysite.sbb.domain.user.user.controller;
 
 import com.mysite.sbb.domain.user.UserCreateForm;
-import com.mysite.sbb.domain.user.service.UserService;
+import com.mysite.sbb.domain.user.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,5 +46,10 @@ public class UserController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
     }
 }
