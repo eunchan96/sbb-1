@@ -11,7 +11,13 @@
         <tbody>
             <tr th:each="question, loop : ${paging}">
                 <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}">번호</td>
-                <td><a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.subject}">제목</a></td>
+                <td>
+                    <a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.subject}">제목</a>
+                    <span class="text-danger small ms-2"
+                          th:if="${#lists.size(question.answers) > 0}"
+                          th:text="${#lists.size(question.answers)}">
+                    </span>
+                </td>
                 <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}">작성일시</td>
             </tr>
         </tbody>
