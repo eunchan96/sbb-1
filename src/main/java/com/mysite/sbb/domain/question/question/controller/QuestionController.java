@@ -4,6 +4,8 @@ import com.mysite.sbb.domain.answer.answer.AnswerForm;
 import com.mysite.sbb.domain.question.question.QuestionForm;
 import com.mysite.sbb.domain.question.question.entity.Question;
 import com.mysite.sbb.domain.question.question.service.QuestionService;
+import com.mysite.sbb.domain.user.user.entity.SiteUser;
+import com.mysite.sbb.domain.user.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,11 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RequestMapping("/question")
 @RequiredArgsConstructor
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping("/list")
     @Transactional(readOnly = true)
@@ -43,11 +48,12 @@ public class QuestionController {
 
     @PostMapping("/create")
     @Transactional
-    public String create(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+    public String create(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
-        questionService.create(questionForm.getSubject(), questionForm.getContent());
+        SiteUser author = userService.getUser(principal.getName());
+        questionService.create(questionForm.getSubject(), questionForm.getContent(), author);
         return "redirect:/question/list";
     }
 }

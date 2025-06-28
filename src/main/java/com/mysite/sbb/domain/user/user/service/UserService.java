@@ -19,4 +19,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
+
+    public SiteUser getUser(String username) {
+        return userRepository.findByUsername(username).get();
+    }
 }

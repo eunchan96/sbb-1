@@ -1,11 +1,9 @@
 package com.mysite.sbb.domain.question.question.entity;
 
 import com.mysite.sbb.domain.answer.answer.entity.Answer;
+import com.mysite.sbb.domain.user.user.entity.SiteUser;
 import com.mysite.sbb.global.entity.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +23,14 @@ public class Question extends BaseEntity {
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
-    public Answer addAnswer(String content){
+    @ManyToOne
+    private SiteUser author;
+
+    public Answer addAnswer(String content, SiteUser author) {
         Answer answer = new Answer();
         answer.setContent(content);
         answer.setQuestion(this);
+        answer.setAuthor(author);
 
         answers.add(answer);
         return answer;

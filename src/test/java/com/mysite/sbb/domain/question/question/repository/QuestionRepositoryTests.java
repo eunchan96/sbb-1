@@ -95,6 +95,7 @@ public class QuestionRepositoryTests {
         Answer answer = new Answer();
         answer.setContent("네, 자동으로 생성됩니다.");
         answer.setQuestion(question);
+        answer.setAuthor(null);
         answerRepository.save(answer);
 
         assertThat(question.getAnswers().size()).isEqualTo(2);
@@ -106,7 +107,7 @@ public class QuestionRepositoryTests {
         Question question = questionRepository.findById(2).get();
         assertThat(question.getAnswers().size()).isEqualTo(1);
 
-        Answer answer = question.addAnswer("네, 자동으로 생성됩니다.");
+        Answer answer = question.addAnswer("네, 자동으로 생성됩니다.", null);
 
         assertThat(question.getAnswers().size()).isEqualTo(2);
         assertThat(answer.getId()).isEqualTo(0); // 새로 추가된 답변의 ID는 아직 저장되지 않았으므로 0이어야 함
