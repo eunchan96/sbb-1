@@ -1,6 +1,7 @@
 package com.mysite.sbb.domain.answer.answer.controller;
 
 import com.mysite.sbb.domain.answer.answer.AnswerForm;
+import com.mysite.sbb.domain.answer.answer.entity.Answer;
 import com.mysite.sbb.domain.answer.answer.service.AnswerService;
 import com.mysite.sbb.domain.question.question.entity.Question;
 import com.mysite.sbb.domain.question.question.service.QuestionService;
@@ -8,14 +9,17 @@ import com.mysite.sbb.domain.user.user.entity.SiteUser;
 import com.mysite.sbb.domain.user.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -40,5 +44,38 @@ public class AnswerController {
         }
         answerService.create(question, answerForm.getContent(), author);
         return "redirect:/question/detail/" + id;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    @Transactional(readOnly = true)
+    public String answerModify(AnswerForm answerForm, @PathVariable("id") int id, Principal principal) {
+        Answer answer = answerService.getAnswer(id);
+
+        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        answerForm.setContent(answer.getContent());
+        return "answer_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    @Transactional
+    public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult,
+                               @PathVariable("id") int id, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "answer_form";
+        }
+
+        Answer answer = answerService.getAnswer(id);
+
+        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        answerService.modify(answer, answerForm.getContent());
+        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
     }
 }
