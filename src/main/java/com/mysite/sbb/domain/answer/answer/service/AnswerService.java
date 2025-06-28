@@ -14,8 +14,8 @@ import java.util.Set;
 public class AnswerService {
     private final AnswerRepository answerRepository;
 
-    public void create(Question question, String content, SiteUser author) {
-        question.addAnswer(content, author);
+    public Answer create(Question question, String content, SiteUser author) {
+        return question.addAnswer(content, author);
     }
 
     public Answer getAnswer(int id) {
