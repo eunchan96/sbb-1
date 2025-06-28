@@ -46,4 +46,8 @@ public class QuestionService {
     public void modify(Question question, String subject, String content) {
         question.modify(subject, content);
     }
+
+    public void delete(Question question) {
+        questionRepository.delete(question);
+    }
 }
