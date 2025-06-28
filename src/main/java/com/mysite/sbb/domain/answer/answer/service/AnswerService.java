@@ -23,4 +23,8 @@ public class AnswerService {
     public void modify(Answer answer, String content) {
         answer.modify(content);
     }
+
+    public void delete(Answer answer) {
+        answerRepository.delete(answer);
+    }
 }
