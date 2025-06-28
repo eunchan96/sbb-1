@@ -9,6 +9,7 @@ import com.mysite.sbb.domain.user.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -40,12 +41,14 @@ public class QuestionController {
         return "question_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     @Transactional(readOnly = true)
     public String showCreate(QuestionForm questionForm) {
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     @Transactional
     public String create(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {

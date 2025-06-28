@@ -8,6 +8,7 @@ import com.mysite.sbb.domain.user.user.entity.SiteUser;
 import com.mysite.sbb.domain.user.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ public class AnswerController {
     private final AnswerService answerService;
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     @Transactional
     public String createAnswer(Model model, @PathVariable int id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
