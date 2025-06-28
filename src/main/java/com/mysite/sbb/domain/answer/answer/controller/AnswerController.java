@@ -34,7 +34,7 @@ public class AnswerController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     @Transactional
-    public String createAnswer(Model model, @PathVariable int id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
+    public String create(Model model, @PathVariable int id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
         Question question = questionService.getQuestion(id);
         SiteUser author = userService.getUser(principal.getName());
 
@@ -46,10 +46,11 @@ public class AnswerController {
         return "redirect:/question/detail/" + id;
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     @Transactional(readOnly = true)
-    public String answerModify(AnswerForm answerForm, @PathVariable("id") int id, Principal principal) {
+    public String showModify(AnswerForm answerForm, @PathVariable("id") int id, Principal principal) {
         Answer answer = answerService.getAnswer(id);
 
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
@@ -63,7 +64,7 @@ public class AnswerController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     @Transactional
-    public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult,
+    public String modify(@Valid AnswerForm answerForm, BindingResult bindingResult,
                                @PathVariable("id") int id, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "answer_form";
@@ -79,10 +80,11 @@ public class AnswerController {
         return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     @Transactional
-    public String answerDelete(Principal principal, @PathVariable("id") int id) {
+    public String delete(Principal principal, @PathVariable("id") int id) {
         Answer answer = answerService.getAnswer(id);
 
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {

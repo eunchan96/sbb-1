@@ -43,6 +43,7 @@ public class QuestionController {
         return "question_detail";
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     @Transactional(readOnly = true)
@@ -62,10 +63,11 @@ public class QuestionController {
         return "redirect:/question/list";
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    @Transactional
-    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
+    @Transactional(readOnly = true)
+    public String showModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
 
         if(!question.getAuthor().getUsername().equals(principal.getName())) {
@@ -81,7 +83,7 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     @Transactional
-    public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult,
+    public String modify(@Valid QuestionForm questionForm, BindingResult bindingResult,
                                  Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
             return "question_form";
@@ -97,10 +99,11 @@ public class QuestionController {
         return String.format("redirect:/question/detail/%s", id);
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     @Transactional
-    public String questionDelete(Principal principal, @PathVariable("id") int id) {
+    public String delete(Principal principal, @PathVariable("id") int id) {
         Question question = questionService.getQuestion(id);
         if (!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
