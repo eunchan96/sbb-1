@@ -34,17 +34,8 @@
         </div>
     </div>
 
-    <!-- Answer Form -->
-    <h2>답변 등록</h2>
-    <form th:action="@{/answer/create/{questionId}(questionId=${question.id})}" th:object="${answerForm}" method="post" class="my-3">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
-        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-primary my-2" />
-    </form>
-
     <!-- Answers -->
-    <h2 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answers)}개의 답변이 있습니다.|">답변 개수</h2>
+    <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answers)}개의 답변이 있습니다.|">답변 개수</h5>
     <div class="card my-3" th:each="answer : ${question.answers}">
         <a th:id="|answer_${answer.id}|"></a>
         <div class="card-body">
@@ -77,6 +68,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Answer Form -->
+    <hr th:if="${#lists.size(question.answers) > 0}">
+    <form th:action="@{/answer/create/{questionId}(questionId=${question.id})}" th:object="${answerForm}" method="post" class="my-3">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
+        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
+        <input type="submit" value="답변등록" class="btn btn-primary my-2" />
+    </form>
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
