@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,6 +26,9 @@ public class Question extends BaseEntity {
 
     @ManyToOne
     private SiteUser author;
+
+    @ManyToMany
+    Set<SiteUser> voters;
 
     public Answer addAnswer(String content, SiteUser author) {
         Answer answer = new Answer();

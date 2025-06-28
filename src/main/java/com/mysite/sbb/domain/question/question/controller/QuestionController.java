@@ -96,7 +96,7 @@ public class QuestionController {
         }
 
         questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
-        return String.format("redirect:/question/detail/%s", id);
+        return "redirect:/question/detail/" + id;
     }
 
 
@@ -110,5 +110,15 @@ public class QuestionController {
         }
         questionService.delete(question);
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    @Transactional
+    public String vote(Principal principal, @PathVariable("id") int id) {
+        Question question = questionService.getQuestion(id);
+        SiteUser siteUser = userService.getUser(principal.getName());
+        questionService.vote(question, siteUser);
+        return "redirect:/question/detail/" + id;
     }
 }

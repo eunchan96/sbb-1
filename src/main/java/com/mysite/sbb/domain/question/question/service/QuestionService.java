@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -49,5 +50,12 @@ public class QuestionService {
 
     public void delete(Question question) {
         questionRepository.delete(question);
+    }
+
+    public void vote(Question question, SiteUser siteUser) {
+        Set<SiteUser> voters = question.getVoters();
+
+        if (voters.contains(siteUser)) voters.remove(siteUser);
+        else voters.add(siteUser);
     }
 }

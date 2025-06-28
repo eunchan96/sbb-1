@@ -18,6 +18,10 @@
                 </div>
             </div>
             <div class="my-3">
+                <a th:href="@{/question/vote/{questionId}(questionId=${question.id})}" class="btn btn-sm btn-outline-secondary">
+                    추천
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voters)}"></span>
+                </a>
                 <a th:href="@{/question/modify/{questionId}(questionId=${question.id})}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
@@ -75,7 +79,7 @@
         element.addEventListener('click', function() {
             if(confirm("정말로 삭제하시겠습니까?")) {
                 location.href = this.dataset.uri;
-            };
+            }
         });
     });
 </script>
