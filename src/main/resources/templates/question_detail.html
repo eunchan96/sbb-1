@@ -61,6 +61,10 @@
                 </div>
             </div>
             <div class="my-3">
+                <a th:href="@{/answer/vote/{answerId}(answerId=${answer.id})}" class="btn btn-sm btn-outline-secondary">
+                    추천
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.voters)}"></span>
+                </a>
                 <a th:href="@{/answer/modify/{answerId}(answerId=${answer.id})}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"

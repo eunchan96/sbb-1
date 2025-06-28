@@ -7,6 +7,8 @@ import com.mysite.sbb.domain.user.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @RequiredArgsConstructor
 @Service
 public class AnswerService {
@@ -26,5 +28,11 @@ public class AnswerService {
 
     public void delete(Answer answer) {
         answerRepository.delete(answer);
+    }
+
+    public void vote(Answer answer, SiteUser siteUser) {
+        Set<SiteUser> voters = answer.getVoters();
+        if (voters.contains(siteUser)) voters.remove(siteUser);
+        else voters.add(siteUser);
     }
 }

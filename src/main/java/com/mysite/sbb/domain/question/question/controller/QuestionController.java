@@ -112,6 +112,7 @@ public class QuestionController {
         return "redirect:/";
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
     @Transactional
