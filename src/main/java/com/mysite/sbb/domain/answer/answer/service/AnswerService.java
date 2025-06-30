@@ -37,13 +37,21 @@ public class AnswerService {
 
     public void vote(Answer answer, SiteUser siteUser) {
         Set<SiteUser> voters = answer.getVoters();
-        if (voters.contains(siteUser)) voters.remove(siteUser);
-        else voters.add(siteUser);
+        if (!voters.contains(siteUser)) {
+            voters.add(siteUser);
+            answer.setVoteCount(answer.getVoteCount() + 1);
+        }
+        else {
+            voters.remove(siteUser);
+            answer.setVoteCount(answer.getVoteCount() - 1);
+        }
     }
 
-    public Page<Answer> getAnswersByQuestionId(int questionId, int page) {
+    public Page<Answer> getAnswersByQuestionId(int questionId, int page, String sortBy) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if ("voteCount".equals(sortBy)) sorts.add(Sort.Order.desc("voteCount"));
+        else sorts.add(Sort.Order.desc("createDate"));
+
         PageRequest pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return answerRepository.findByQuestionId(questionId, pageable);
     }

@@ -28,6 +28,9 @@ public class Answer extends BaseEntity {
     @ManyToMany
     private Set<SiteUser> voters;
 
+    @Column(nullable = false)
+    private int voteCount = 0;
+
     public void modify(String content) {
         this.content = content;
     }

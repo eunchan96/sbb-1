@@ -42,11 +42,15 @@ public class QuestionController {
 
     @GetMapping("/detail/{id}")
     @Transactional(readOnly = true)
-    public String detail(@PathVariable int id, AnswerForm answerForm, Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String detail(@PathVariable int id, AnswerForm answerForm, Model model,
+                         @RequestParam(value = "page", defaultValue = "0") int page,
+                         @RequestParam(value = "sort", defaultValue = "createDate") String sort
+    ) {
         Question question = questionService.getQuestion(id);
-        Page<Answer> paging = answerService.getAnswersByQuestionId(id, page);
+        Page<Answer> paging = answerService.getAnswersByQuestionId(id, page, sort);
         model.addAttribute("question", question);
         model.addAttribute("paging", paging);
+        model.addAttribute("sort", sort); // UI에서 선택값 유지용
         return "question_detail";
     }
 
