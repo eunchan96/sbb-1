@@ -1,6 +1,8 @@
 package com.mysite.sbb.domain.question.question.controller;
 
 import com.mysite.sbb.domain.answer.answer.AnswerForm;
+import com.mysite.sbb.domain.answer.answer.entity.Answer;
+import com.mysite.sbb.domain.answer.answer.service.AnswerService;
 import com.mysite.sbb.domain.question.question.QuestionForm;
 import com.mysite.sbb.domain.question.question.entity.Question;
 import com.mysite.sbb.domain.question.question.service.QuestionService;
@@ -26,6 +28,7 @@ import java.security.Principal;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
+    private final AnswerService answerService;
 
     @GetMapping("/list")
     @Transactional(readOnly = true)
@@ -39,9 +42,11 @@ public class QuestionController {
 
     @GetMapping("/detail/{id}")
     @Transactional(readOnly = true)
-    public String detail(@PathVariable int id, AnswerForm answerForm, Model model) {
+    public String detail(@PathVariable int id, AnswerForm answerForm, Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
         Question question = questionService.getQuestion(id);
+        Page<Answer> paging = answerService.getAnswersByQuestionId(id, page);
         model.addAttribute("question", question);
+        model.addAttribute("paging", paging);
         return "question_detail";
     }
 
