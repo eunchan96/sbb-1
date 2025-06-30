@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static java.time.LocalDateTime.now;
+
 @Getter
 @Setter
 @Entity
@@ -43,5 +45,6 @@ public class Question extends BaseEntity {
     public void modify(String subject, String content) {
         this.subject = subject;
         this.content = content;
+        setModifyDate(now());
     }
 }

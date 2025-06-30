@@ -12,6 +12,8 @@ import lombok.Setter;
 
 import java.util.Set;
 
+import static java.time.LocalDateTime.now;
+
 @Getter
 @Setter
 @Entity
@@ -33,5 +35,6 @@ public class Answer extends BaseEntity {
 
     public void modify(String content) {
         this.content = content;
+        setModifyDate(now());
     }
 }
