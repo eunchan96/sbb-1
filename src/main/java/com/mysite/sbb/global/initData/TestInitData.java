@@ -37,17 +37,17 @@ public class TestInitData {
     public void work1() {
         if(questionService.count() > 0) return;
 
-        SiteUser siteUser1 = userService.create("user1", "1234", "user1@naver.com");
+        SiteUser siteUser1 = userService.create("user1", "user1@naver.com", "1234");
         String subject1 = "sbb가 무엇인가요?";
         String content1 = "sbb에 대해서 알고 싶습니다.";
         questionService.create(subject1, content1, siteUser1);
 
-        SiteUser siteUser2 = userService.create("user2", "5678", "user2@naver.com");
+        SiteUser siteUser2 = userService.create("user2", "user2@naver.com", "5678");
         String subject2 = "스프링부트 모델 질문입니다.";
         String content2 = "스프링부트 모델 질문입니다. 답변 부탁드립니다.";
         Question question2 = questionService.create(subject2, content2, siteUser2);
 
-        SiteUser admin = userService.create("admin", "admin", "admin@naver.com");
+        SiteUser admin = userService.create("admin", "admin@naver.com", "admin");
         question2.addAnswer("네, 자동으로 생성됩니다.", admin);
 
         System.out.println("기본 데이터가 초기화되었습니다.");
@@ -64,8 +64,10 @@ public class TestInitData {
 
     @Transactional
     public void work3() {
-        SiteUser siteUser1 = userService.create("진규장", "진규장규진", "eunchan0906@naver.com");
-        SiteUser siteUser2 = userService.create("JinKyuJang", "JinKyuJangKyuJin", "bangbangchan@naver.com");
+        if(questionService.count() > 2) return;
+
+        SiteUser siteUser1 = userService.create("진규장", "eunchan0906@naver.com", "wlsrbwkdrbwls");
+        SiteUser siteUser2 = userService.create("JinKyuJang", "bangbangchan@naver.com", "JinKyuJangKyuJin");
         SiteUser siteUser3 = userService.getUser("user1");
 
         String subject1 = "대규진";
